@@ -20,8 +20,7 @@ int main() {
             std::cout << "Area = " << triangle.computerArea() << std::endl;
             std::cout << std::endl;
         }
-
-
     }
+
     return 0;
 }

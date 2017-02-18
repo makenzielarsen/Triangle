@@ -20,7 +20,7 @@ Triangle::Triangle(std::string& triangleStr)
         m_points = new Point*[3];
         m_points[0] = new Point(values[0]);
         m_points[1] = new Point(values[1]);
-        m_points[2] = new Point(values[1]);
+        m_points[2] = new Point(values[2]);
         setupEdges();
     }
 }
@@ -37,7 +37,6 @@ bool Triangle::isTriangle() const
     // Make sure the points are valid
     if (m_isValid)
     {
-
         // Make sure all of the points are different
         if (!m_points[0]->isEquivalentTo(*(m_points[1])) &&
             !m_points[1]->isEquivalentTo(*(m_points[2])) &&
@@ -61,7 +60,7 @@ char Triangle::getTriangleType() const
     char result = 'X';
     if (isValid())
     {
-        if (!isTriangle())
+        if (isTriangle())
         {
             double a = m_edges[0]->getLength();
             double b = m_edges[1]->getLength();
@@ -73,7 +72,7 @@ char Triangle::getTriangleType() const
             // If any two sides are the same, then its an isosceles
             else if (approximatelyEquals(a, b, m_edgeLengthThreshold) ||
                     approximatelyEquals(b, c, m_edgeLengthThreshold) ||
-                    approximatelyEquals(c, c, m_edgeLengthThreshold))
+                    approximatelyEquals(c, a, m_edgeLengthThreshold))
             {
                 result = 'I';
             }
@@ -102,7 +101,7 @@ double Triangle::computerArea() const
         double a = m_edges[0]->getLength();
         double b = m_edges[1]->getLength();
         double c = m_edges[2]->getLength();
-        double s = ( a + b + b)/2;
+        double s = ( a + b + c ) / 2;
         area = sqrt(s*(s-a)*(s-b)*(s-c));
     }
     return area;
@@ -130,6 +129,6 @@ void Triangle::setupEdges()
         m_edges[1] = new Edge(m_points[1], m_points[2]);
         m_edges[2] = new Edge(m_points[2], m_points[0]);
 
-        m_isValid = m_edges[0]->isValid() || m_edges[1]->isValid() || m_edges[2]->isValid();
+        m_isValid = m_edges[0]->isValid() && m_edges[1]->isValid() && m_edges[2]->isValid();
     }
 }

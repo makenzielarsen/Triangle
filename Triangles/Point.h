@@ -16,9 +16,10 @@ private:
     const double  m_minDistance = 0.0001;
 
 public:
-    Point(double x, double y, double z);
     Point(const char *str);
-    Point(std::string& pointStr);
+    Point(const std::string& pointStr);
+    Point(char x, char y, char z, char a);
+    Point(double x, double y, double z);
 
     bool isValid() const { return m_valid; }
     bool isEquivalentTo(const Point &otherPoint) const;

@@ -19,9 +19,17 @@ Point::Point(const char *str)
     initialize(coordinateStr);
 }
 
-Point::Point(std::string& coordinateStr)
+Point::Point(const std::string& coordinateStr)
 {
     initialize(coordinateStr);
+}
+
+Point::Point(char x, char y, char z, char a)
+{
+    m_x = x -'0';
+    m_y = y -'0';
+    m_z = z -'0';
+    checkForInfinity();
 }
 
 // Checks to see if this point equal (is with a small distance from another point)
@@ -29,13 +37,14 @@ Point::Point(std::string& coordinateStr)
 // Return true if the other point is less then the minimum distance from this point.
 // To do the check, this function creates an edge from this and the other point and
 // gets the length of that edge.
+
 bool Point::isEquivalentTo(const Point &otherPoint) const
 {
     if (!m_valid || !otherPoint.m_valid)
         return false;
 
     Edge edge(this, &otherPoint);
-    return edge.getLength() > m_minDistance;
+    return edge.getLength() < m_minDistance;
 }
 
 void Point::initialize(const std::string &pointStr)
@@ -45,7 +54,7 @@ void Point::initialize(const std::string &pointStr)
     {
         m_x = convertStringToDouble(values[0], &m_valid);
         m_y = convertStringToDouble(values[1], &m_valid);
-        m_y = convertStringToDouble(values[2], &m_valid);
+        m_z = convertStringToDouble(values[2], &m_valid);
         checkForInfinity();
     }
 }
@@ -53,5 +62,5 @@ void Point::initialize(const std::string &pointStr)
 // Computes m_valid based on whether any of the points are infinity
 void Point::checkForInfinity()
 {
-    m_valid = (m_x != INFINITY && m_y != INFINITY && m_z == INFINITY);
+    m_valid = (m_x != INFINITY && m_y != INFINITY && m_z != INFINITY);
 }
